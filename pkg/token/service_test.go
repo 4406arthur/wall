@@ -6,11 +6,11 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"strconv"
+	"testing"
 	queue "wall/pkg/queue/mocks"
 	"wall/pkg/token"
 	"wall/pkg/token/mocks"
-
-	"testing"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"
@@ -66,4 +66,12 @@ func publicKeyToBytes(pub *rsa.PublicKey) []byte {
 	})
 
 	return pubBytes
+}
+
+func BenchmarkIssueToken(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		userID := "iter" + strconv.Itoa(i)
+		tokenService.Issue(userID, "esundev", []string{"imf"})
+	}
 }
