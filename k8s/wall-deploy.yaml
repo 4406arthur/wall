@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-wall
+  labels:
+    deploy: wall
+    group: backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      api: wall
+  template:
+    metadata:
+      labels:
+        api: wall
+        group: backend
+    spec:
+      containers:
+        - name: gin
+          image: arthurma/wall:v1.0.0
+          resources:
+            requests:
+              cpu: 256m
+              memory: 256Mi
+            limits:
+              cpu: 512m
+              memory: 512Mi
+          volumeMounts:
+            - name: wall-configmap
+              mountPath: /config
+      volumes:
+        - name: wall-configmap
+          configMap:
+            name: wall-config

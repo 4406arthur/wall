@@ -1,0 +1,10 @@
+{
+    "server_config": {
+		"listen_addr": ":80",
+		"jwt": "/config/jwt_rsa_priv.pem",
+		"log_level": 5
+	},
+	"developer_repo": {
+		"file_path": "/config/dev_account.yaml"
+	}
+}
